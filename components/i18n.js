@@ -1,0 +1,46 @@
+const i18n = (lang, word) => {
+  const vocabular = {
+    type_the_event_name: {en: 'Event Name', ua: 'Назва події',},
+    once: {en: 'Once', ua: 'Разова',},
+    periodically: {en: 'Periodically', ua: 'Періодична',},
+    outgoing_payment: {en: 'Outgoing payment', ua: 'Витрата',},
+    incoming_payment: {en: 'Incoming payment', ua: 'Прибуток',},
+    enter_amount: {en: 'Enter Amount', ua: 'Сума операції',},
+    modify_financial_event: {en: 'Modify Financial Event', ua: 'Змінити фінансову подію',},
+    start_date: {en: 'Start Date', ua: 'Дата початку',},
+    finish_date: {en: 'Finish Date', ua: 'Дата закінчення',},
+    delete: {en: 'delete', ua: 'видалити',},
+    cancel: {en: 'cancel', ua: 'скасувати',},
+    apply: {en:'apply', ua:'застосувати'},
+    save: {en:'save', ua:'зберігти'},
+    event_name: {en: 'Event Name', ua: 'Назва події',},
+    positive_absolute_amount: {en: 'Positive Absolute Amount', ua: 'Позитивне число',},
+    amount: {en: 'Amount', ua: 'Сума',}, 
+    balance: {en: 'Balance', ua: 'Баланс',}, 
+    number: {en: 'NUMBER!', ua: 'ЧИСЛО!',},
+    financial_forecast: {en: 'Financial Forecast for Future', ua: 'Фінансовий Прогноз на Майбутнє',},
+    create_new_financial_event: {en: 'Create New Finacial Event', ua: 'Створити Нову Фінансову Подію',},
+    end_of_repetition: {en: 'End of Repetitions', ua: 'Закінчення Повторів',},
+    period_every: {en: 'Period. Every', ua: 'Період. Кожний',},
+    custom_period_every: {en: 'Custom Period. Every', ua: 'Власний Період. Кожні',},
+    days: {en: 'Days', ua: 'Дні',},
+    stop_after: {en: 'Stop After', ua: 'Закінчити після',},
+    year: {en: 'Year', ua: 'Рік',},
+    month: {en: 'Month', ua: 'Місяць',},
+    week: {en: 'Week', ua: 'Тиждень',},
+    day: {en: 'Day', ua: 'День',},
+    custom: {en: 'Custom', ua: 'Власний',}, 
+    none: {en: 'None', ua: 'Немає',},
+    never: {en: 'Never', ua: 'Ніколи',},
+    date: {en: 'Date', ua: 'Дата',},
+    after: {en: 'After', ua: 'Кількість',},
+    type_period_in_days: {en: "Type Period in Days", ua: 'Введіть Період в Днях'},
+    dd: {en:'dd', ua:'дд'},
+    mm: {en:'mm', ua:'мм'},
+    yyyy: {en:'year', ua:'рік'},
+  };
+  
+  return vocabular[word] ? vocabular[word][lang] ? vocabular[word][lang] : vocabular[word].en: `(${word} -> i18n!!!)`;
+}
+
+export default i18n;
