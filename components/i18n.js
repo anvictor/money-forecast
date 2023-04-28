@@ -35,8 +35,8 @@ const i18n = (lang, word) => {
     date: {en: 'Date', ua: 'Дата',},
     after: {en: 'After', ua: 'Кількість',},
     type_period_in_days: {en: "Type Period in Days", ua: 'Введіть Період в Днях'},
-    dd: {en:'dd', ua:'дд'},
-    mm: {en:'mm', ua:'мм'},
+    dd: {en:'day', ua:'число'},
+    mm: {en:'month', ua:'місяць'},
     yyyy: {en:'year', ua:'рік'},
   };
   

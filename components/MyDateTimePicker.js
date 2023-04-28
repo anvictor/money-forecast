@@ -10,7 +10,6 @@ import { datepickerDate } from "./utils";
 
 const MyDateTimePicker = ({ value, onChange, onCancel, lang, label }) => {
   const valueDate = new Date(Date.parse(value));
-  const [dateData, setDateData] = useState(datepickerDate);
   const [day, setDay] = useState("" + valueDate.getDate());
   const [month, setMonth] = useState("" + (valueDate.getMonth() + 1));
   const [year, setYear] = useState("" + valueDate.getFullYear());
@@ -19,6 +18,8 @@ const MyDateTimePicker = ({ value, onChange, onCancel, lang, label }) => {
     const lastDay = new Date(year, month, 0).getDate();
     return lastDay;
   };
+
+  const [dayMax, setDayMax] = useState(maxDayOfMonth(month, year));
 
   const handleSave = () => {
     const isYY = year > 1970;
@@ -39,15 +40,10 @@ const MyDateTimePicker = ({ value, onChange, onCancel, lang, label }) => {
       onChange(startDate);
     }
   };
-
+  console.log(year, month, day);
   useEffect(() => {
-    console.log(maxDayOfMonth(month, year));
-    // setDateData({
-    //   dd: newMonthDays,
-    //   mm: datepickerDate.mm,
-    //   yy: datepickerDate.yy,
-    // });
-    // setDay(day);
+    setDayMax(maxDayOfMonth(month, year));
+    setDay(maxDayOfMonth(month, year));
   }, [day, month, year]);
 
   return (
@@ -57,8 +53,8 @@ const MyDateTimePicker = ({ value, onChange, onCancel, lang, label }) => {
 
         <View style={styles.dd_mm_yyyy_inputRow}>
           <View style={styles.yyyy_inputColumn}>
-            <Text style={styles.input_Date}>{i18n(lang, "yyyy")} </Text>
             <NumInput
+              title={i18n(lang, "yyyy")}
               min={datepickerDate.yy.min}
               max={datepickerDate.yy.max}
               onValueChange={setYear}
@@ -66,18 +62,19 @@ const MyDateTimePicker = ({ value, onChange, onCancel, lang, label }) => {
             />
           </View>
           <View style={styles.dd_mm_inputColumn}>
-            <Text style={styles.input_Date}>{i18n(lang, "mm")} </Text>
-            <NumInput min={1} max={12} onValueChange={setMonth} value={month} />
-          </View>
-          <View
-            style={
-              day ? styles.dd_mm_inputColumn : styles.dd_mm_inputColumn_warning
-            }
-          >
-            <Text style={styles.input_Date}>{i18n(lang, "dd")} </Text>
             <NumInput
+              title={i18n(lang, "mm")}
+              min={1}
+              max={12}
+              onValueChange={setMonth}
+              value={month}
+            />
+          </View>
+          <View style={styles.dd_mm_inputColumn}>
+            <NumInput
+              title={i18n(lang, "dd")}
               min={datepickerDate.dd.min}
-              max={datepickerDate.dd.max}
+              max={dayMax}
               onValueChange={setDay}
               value={day}
             />

@@ -207,7 +207,7 @@ export const runTests = () => {
   write(name, expectation, res, 'noDate');
 
   name = 'quantityOfPoints startDate > endDate';
-  console.log('');
+  console.log('-');
   console.log(name, 'message: "Error quantityOfPoints: startDate > endDate"');
   res = quantityOfPoints(
     {
