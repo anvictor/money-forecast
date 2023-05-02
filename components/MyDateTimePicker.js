@@ -40,11 +40,10 @@ const MyDateTimePicker = ({ value, onChange, onCancel, lang, label }) => {
       onChange(startDate);
     }
   };
-  console.log(year, month, day);
   useEffect(() => {
-    setDayMax(maxDayOfMonth(month, year));
-    setDay(maxDayOfMonth(month, year));
-  }, [day, month, year]);
+    setDayMax(+maxDayOfMonth(month, year));
+    setDay(+maxDayOfMonth(month, year));
+  }, [ month, year]);
 
   return (
     <Modal isVisible={true}>
@@ -72,6 +71,7 @@ const MyDateTimePicker = ({ value, onChange, onCancel, lang, label }) => {
           </View>
           <View style={styles.dd_mm_inputColumn}>
             <NumInput
+              // title={`${i18n(lang, "dd")} <= ${dayMax}`}
               title={i18n(lang, "dd")}
               min={datepickerDate.dd.min}
               max={dayMax}

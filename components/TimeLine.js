@@ -36,6 +36,7 @@ export default function TimeLine({
         data.map((event) => {
           return (
             <TimeLinePoint
+            key={`${event.source.id}=${uuid.v4()}`}
               id={`${event.source.id}=${uuid.v4()}`}
               source={event.source}
               date={event.date}
