@@ -64,12 +64,10 @@ export const styles = StyleSheet.create({
     width: 150,
   },
   disabledBtn: {
-    margin: 5,
-    backgroundColor: colors.veryPery,
-    padding: 10,
-    borderRadius: 5,
-    width: 150,
-    opacity: 0.5,
+    color: "#fff",
+    fontWeight: "bold",
+    textAlign: "center",
+    opacity: 0.3,
   },
   button_text: {
     color: "#fff",

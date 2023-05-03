@@ -60,11 +60,11 @@ export default function Periodically({
       <SelectDropdown
         defaultValue={selectDropdownEndRepeatLocal[endRepeatIndex]}
         data={selectDropdownEndRepeatLocal}
-        onSelect={(endRepeat, index) => handleSetEndRepeat(index)}
-        buttonTextAfterSelection={(endRepeat, index) =>
+        onSelect={(_endRepeat, index) => handleSetEndRepeat(index)}
+        buttonTextAfterSelection={(_endRepeat, index) =>
           selectDropdownEndRepeatLocal[index]
         }
-        rowTextForSelection={(item, index) => {
+        rowTextForSelection={(item) => {
           // text represented for each item in dropdown
           // if data array is an array of objects then return item.property to represent item in dropdown
           return item;

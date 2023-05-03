@@ -292,7 +292,8 @@ export const quantityOfPoints = (currentEvent, date) => {
     currentEvent.endRepeat === "Date" &&
     dates.compare(currentEvent.startDate, currentEvent.endDate) > 0
   ) {
-    console.error("Error quantityOfPoints: startDate > endDate");
+    console.error("Error quantityOfPoints:");
+    console.error("StartDate > endDate");
     return 0;
   }
 

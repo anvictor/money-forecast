@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Text,
   ScrollView,
@@ -6,18 +6,18 @@ import {
   View,
   TextInput,
   Pressable,
-} from 'react-native';
-import uuid from 'react-native-uuid';
-import MyDateTimePicker from './MyDateTimePicker';
-import Periodically from './Periodically';
-import { dates } from './utils';
-import { styles, colors } from './styles';
-import i18n from './i18n';
+} from "react-native";
+import uuid from "react-native-uuid";
+import MyDateTimePicker from "./MyDateTimePicker";
+import Periodically from "./Periodically";
+import { dates } from "./utils";
+import { styles, colors } from "./styles";
+import i18n from "./i18n";
 
 export default function ModifyFinancialEvent({
   financialEvent,
   setIsTimeLine,
-  addModyfiedEvent, 
+  addModyfiedEvent,
   removeModyfiedEvent,
   lang,
 }) {
@@ -34,21 +34,24 @@ export default function ModifyFinancialEvent({
     isOutgoing: propsIsOutgoing,
   } = financialEvent;
 
-  const [name, setName] = useState(propsName || '');
+  const [name, setName] = useState(propsName || "");
   const [isAmountNumber, setIsAmountNumber] = useState(true);
-  const [endRepeat, setEndRepeat] = useState(propsEndRepeat || 'Never'); // [Never, Date, After]
+  const [endRepeat, setEndRepeat] = useState(propsEndRepeat || "Never"); // [Never, Date, After]
   const [endTimes, setEndTimes] = useState(propsEndTimes || 1);
-  const [period, setPeriod] = useState(propsPeriod || 'None'); // [None, Day, Week, Month, Year, Custom]
+  const [period, setPeriod] = useState(propsPeriod || "None"); // [None, Day, Week, Month, Year, Custom]
   const [customPeriod, setCustomPeriod] = useState(propsCustomPeriod || 0);
   const [amount, setAmount] = useState(propsAmount || 1);
   const [isOutgoing, setIsOutgoing] = useState(propsIsOutgoing || false);
-  const [isOnce, setIsOnce] = useState(period === 'None');
+  const [isOnce, setIsOnce] = useState(period === "None");
   const [isStartDatePickerVisible, setIsStartDatePickerVisible] =
     useState(false);
   const id = propsId || uuid.v4();
   const nowDate = new Date();
   const [startDate, setStartDate] = useState(propsStartDate || nowDate);
   const [endDate, setEndDate] = useState(propsEndDate || nowDate);
+  const [isStartAfterEnd, setIsStartAfterEnd] = useState(
+    dates.compare(startDate, endDate) > 0 ? true : false
+  );
 
   const hideStartDataPicker = () => {
     setIsStartDatePickerVisible(false);
@@ -63,16 +66,21 @@ export default function ModifyFinancialEvent({
         nowDate.getUTCSeconds() * 1000
     );
     setStartDate(startDate);
-    console.log('A startDate has been picked: ', dates.format(startDate, lang));
+    console.log("A startDate has been picked: ");
+    console.log(dates.format(startDate, lang));
     hideStartDataPicker();
   };
 
   const handleClickApply = () => {
-    if (isAmountNumber) {
+    if (isStartAfterEnd) {
+      console.error(i18n(lang, "start_after_end"));
+    } else if (!isAmountNumber) {
+      console.error(i18n(lang, "amount_number"));
+    } else if (isAmountNumber) {
       const financialEvent = {
         id,
         name,
-        startDate, 
+        startDate,
         endRepeat,
         endDate,
         endTimes,
@@ -103,33 +111,38 @@ export default function ModifyFinancialEvent({
     if (isNum) setAmount(+number);
   };
 
+  useEffect(() => {
+    setIsStartAfterEnd(dates.compare(startDate, endDate) > 0 ? true : false);
+  }, [startDate, endDate]);
+
   return (
     <ScrollView contentContainerStyle={styles.modifierContainer}>
-      <Text style={styles.header}>{i18n(lang, 'modify_financial_event')}</Text>
+      <Text style={styles.header}>{i18n(lang, "modify_financial_event")}</Text>
       <Text style={styles.inputTextLabel}>
-        {i18n(lang, 'event_name')}{' '}
+        {i18n(lang, "event_name")}{" "}
         <Text style={styles.required_asterix}>*</Text>
       </Text>
       <TextInput
         style={styles.text_and_input_Name}
-        placeholder={i18n(lang, 'type_the_event_name')}
+        placeholder={i18n(lang, "type_the_event_name")}
         onChangeText={(eventName) => setName(eventName)}
         defaultValue={name}
         multiline={true}
       />
       <Text style={styles.inputTextLabel}>
-        {i18n(lang, 'start_date')}{' '}
+        {i18n(lang, "start_date")}{" "}
         <Text style={styles.required_asterix}>*</Text>
       </Text>
       <Text
         style={styles.text_and_input_Start}
-        onPress={() => setIsStartDatePickerVisible(true)}>
+        onPress={() => setIsStartDatePickerVisible(true)}
+      >
         {dates.format(startDate, lang)}
       </Text>
       {isStartDatePickerVisible && (
         <MyDateTimePicker
-          label={i18n(lang, 'start_date')} 
-          value={startDate}     
+          label={i18n(lang, "start_date")}
+          value={startDate}
           onChange={handleChangeStartData}
           onCancel={hideStartDataPicker}
           lang={lang}
@@ -138,28 +151,28 @@ export default function ModifyFinancialEvent({
       <View style={styles.switcherLine}>
         <Text style={styles.switcherLabel}>{`${
           isOutgoing
-            ? i18n(lang, 'outgoing_payment')
-            : i18n(lang, 'incoming_payment')
+            ? i18n(lang, "outgoing_payment")
+            : i18n(lang, "incoming_payment")
         }`}</Text>
         <Switch
-          trackColor={{ false: '#c97574', true: '#abdcab' }}
-          thumbColor={'black'}
-          ios_backgroundColor={'#c97574'}
+          trackColor={{ false: "#c97574", true: "#abdcab" }}
+          thumbColor={"black"}
+          ios_backgroundColor={"#c97574"}
           onValueChange={() => setIsOutgoing(!isOutgoing)}
           value={!isOutgoing}
         />
       </View>
       <View style={styles.switcherLine}>
         <Text style={styles.switcherLabel}>{`${
-          isOnce ? i18n(lang, 'once') : i18n(lang, 'periodically')
+          isOnce ? i18n(lang, "once") : i18n(lang, "periodically")
         }`}</Text>
         <Switch
-          trackColor={{ false: 'grey', true: colors.veryPery }}
-          thumbColor={'black'}
-          ios_backgroundColor={'grey'}
+          trackColor={{ false: "grey", true: colors.veryPery }}
+          thumbColor={"black"}
+          ios_backgroundColor={"grey"}
           onValueChange={() => {
-            if (!isOnce) setPeriod('None');
-            if (isOnce) setPeriod('Month');
+            if (!isOnce) setPeriod("None");
+            if (isOnce) setPeriod("Month");
             setIsOnce(!isOnce);
           }}
           value={isOnce}
@@ -168,7 +181,7 @@ export default function ModifyFinancialEvent({
 
       {!isOnce && (
         <Periodically
-          endDate={endDate} 
+          endDate={endDate}
           setEndDate={setEndDate}
           period={period}
           setPeriod={setPeriod}
@@ -182,38 +195,45 @@ export default function ModifyFinancialEvent({
         />
       )}
       <Text style={styles.inputTextLabel}>
-        {i18n(lang, 'positive_absolute_amount')}{' '}
+        {i18n(lang, "positive_absolute_amount")}{" "}
         <Text style={styles.required_asterix}>*</Text>
         {!isAmountNumber && (
-          <Text style={styles.required_asterix}>{i18n(lang, 'number')} </Text>
+          <Text style={styles.required_asterix}>{i18n(lang, "number")} </Text>
         )}
       </Text>
       <TextInput
         keyboardType="number-pad"
         style={styles.text_and_input_Amount}
-        placeholder={i18n(lang, 'enter_amount')}
+        placeholder={i18n(lang, "enter_amount")}
         onChangeText={verifyAmount}
-        defaultValue={'' + amount}
+        defaultValue={"" + amount}
       />
       <View style={styles.button_container}>
         <Pressable
-          style={[styles.button, { alignSelf: 'center' }]}
-          onPress={handleClickDelete}>
-          <Text style={styles.button_text}>{i18n(lang, 'delete')}</Text>
+          style={[styles.button, { alignSelf: "center" }]}
+          onPress={handleClickDelete}
+        >
+          <Text style={styles.button_text}>{i18n(lang, "delete")}</Text>
         </Pressable>
       </View>
       <View style={styles.button_container}>
         <Pressable
-          style={[styles.button, { alignSelf: 'center' }]}
-          onPress={() => setIsTimeLine(true)}>
-          <Text style={styles.button_text}>{i18n(lang, 'cancel')}</Text>
+          style={[styles.button, { alignSelf: "center" }]}
+          onPress={() => setIsTimeLine(true)}
+        >
+          <Text style={styles.button_text}>{i18n(lang, "cancel")}</Text>
         </Pressable>
       </View>
       <View style={styles.button_container}>
         <Pressable
-          style={[styles.button, { alignSelf: 'center' }]}
-          onPress={handleClickApply}>
-          <Text style={styles.button_text}>{i18n(lang, 'apply')}</Text>
+          style={[styles.button, { alignSelf: "center" }]}
+          onPress={handleClickApply}
+        >
+          <Text
+            style={isStartAfterEnd ? styles.disabledBtn : styles.button_text}
+          >
+            {i18n(lang, "apply")}
+          </Text>
         </Pressable>
       </View>
     </ScrollView>

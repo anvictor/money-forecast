@@ -25,7 +25,8 @@ export default function ToDate({ endDate, setEndDate, lang }) {
         nowDate.getUTCMinutes() * 60 * 1000 +
         nowDate.getUTCSeconds() * 1000
     );
-    console.warn('A finishDate has been picked: ', dates.format(endDate, lang));
+    console.log('A finishDate has been picked: ');
+    console.log(dates.format(endDate, lang));
     setEndDate(endDate);
     setTextEndDate(dates.format(endDate));
     hideEndDataPicker();
