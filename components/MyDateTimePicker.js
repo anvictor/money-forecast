@@ -43,7 +43,7 @@ const MyDateTimePicker = ({ value, onChange, onCancel, lang, label }) => {
   useEffect(() => {
     setDayMax(+maxDayOfMonth(month, year));
     setDay(+maxDayOfMonth(month, year));
-  }, [ month, year]);
+  }, [month, year]);
 
   return (
     <Modal isVisible={true}>
@@ -84,8 +84,7 @@ const MyDateTimePicker = ({ value, onChange, onCancel, lang, label }) => {
           <Text style={styles.button_text}>{i18n(lang, "cancel")}</Text>
         </Pressable>
         <Pressable
-          style={day ? styles.button : styles.disabledBtn}
-          disabled={!day}
+          style={styles.button}
           onPress={handleSave}
         >
           <Text style={styles.button_text}>{i18n(lang, "save")}</Text>
